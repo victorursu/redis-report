@@ -37,6 +37,17 @@ export default function StickyHeader() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    // Listen for custom event to open config modal
+    const handleOpenConfig = () => {
+      setShowConfig(true);
+    };
+    window.addEventListener('openConfig', handleOpenConfig);
+    return () => {
+      window.removeEventListener('openConfig', handleOpenConfig);
+    };
+  }, []);
+
   const formatConnectionString = () => {
     if (!connectionInfo?.ok || !connectionInfo.connection) {
       return 'Not connected';
@@ -52,9 +63,6 @@ export default function StickyHeader() {
       <div className="flex items-center justify-between px-4 py-3">
         {/* Left: Connection String */}
         <div className="flex items-center gap-4 flex-1 min-w-0">
-          <Link href="/" className="text-lg font-semibold text-gray-900 dark:text-white hover:opacity-80">
-            Redis Dashboard
-          </Link>
           <div className="hidden sm:flex items-center gap-2 text-sm">
             <span className="text-gray-500 dark:text-gray-400">Connection:</span>
             <code className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-gray-800 dark:text-gray-100 font-mono text-xs truncate max-w-md border border-gray-200 dark:border-gray-600">
@@ -286,18 +294,21 @@ function ConfigModal({ onClose }: { onClose: () => void }) {
                         value={config.DRUPAL_REDIS_PREFIX || ''}
                         onChange={(v) => updateConfig('DRUPAL_REDIS_PREFIX', v)}
                         placeholder="pantheon-redis-json"
+                        hint="ie: pantheon-redis-json"
                       />
                       <ConfigField
                         label="DRUPAL_SCAN_LIMIT"
                         value={config.DRUPAL_SCAN_LIMIT || ''}
                         onChange={(v) => updateConfig('DRUPAL_SCAN_LIMIT', v)}
                         placeholder="3000"
+                        hint="ie: 50"
                       />
                       <ConfigField
                         label="DRUPAL_TOP_LIMIT"
                         value={config.DRUPAL_TOP_LIMIT || ''}
                         onChange={(v) => updateConfig('DRUPAL_TOP_LIMIT', v)}
                         placeholder="25"
+                        hint="ie: 20"
                       />
                     </>
                   )}
@@ -313,12 +324,14 @@ function ConfigModal({ onClose }: { onClose: () => void }) {
                     value={config.TOP_KEYS_SAMPLE_COUNT || ''}
                     onChange={(v) => updateConfig('TOP_KEYS_SAMPLE_COUNT', v)}
                     placeholder="2000"
+                    hint="ie: 50"
                   />
                   <ConfigField
                     label="TOP_KEYS_LIMIT"
                     value={config.TOP_KEYS_LIMIT || ''}
                     onChange={(v) => updateConfig('TOP_KEYS_LIMIT', v)}
                     placeholder="25"
+                    hint="ie: 20"
                   />
                 </div>
               </div>
@@ -352,17 +365,24 @@ function ConfigField({
   onChange,
   type = 'text',
   placeholder,
+  hint,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   type?: string;
   placeholder?: string;
+  hint?: string;
 }) {
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
         {label}
+        {hint && (
+          <span className="ml-2 text-xs font-normal text-gray-500 dark:text-gray-400">
+            {hint}
+          </span>
+        )}
       </label>
       <input
         type={type}
