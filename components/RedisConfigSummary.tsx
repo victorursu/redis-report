@@ -33,9 +33,9 @@ export default function RedisConfigSummary() {
     return () => { alive = false; };
   }, []);
 
-  if (err) return <div className="mt-2 text-red-600">Failed to load Redis config: {err}</div>;
-  if (!data) return <div className="mt-2 text-sm">Loading Redis config…</div>;
-  if (!data.ok) return <div className="mt-2 text-red-600">Redis config error: {data.error}</div>;
+  if (err) return <div className="mt-2 text-red-600 dark:text-red-400">Failed to load Redis config: {err}</div>;
+  if (!data) return <div className="mt-2 text-sm text-gray-700 dark:text-gray-300">Loading Redis config…</div>;
+  if (!data.ok) return <div className="mt-2 text-red-600 dark:text-red-400">Redis config error: {data.error}</div>;
 
   const s = data.server || {};
   const m = data.memory || {};
@@ -72,16 +72,16 @@ export default function RedisConfigSummary() {
           <Fact key={f.label} label={f.label} value={f.value} />
         ))}
       </div>
-      {data.note && <div className="mt-2 text-xs text-neutral-500">{data.note}</div>}
+      {data.note && <div className="mt-2 text-xs text-neutral-500 dark:text-neutral-400">{data.note}</div>}
     </section>
   );
 }
 
 function Fact({ label, value }: { label: string; value: any }) {
   return (
-    <div className="bg-white rounded-xl shadow p-3">
-      <div className="text-[12px] text-neutral-500">{label}</div>
-      <div className="text-base font-semibold truncate">{String(value)}</div>
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow dark:shadow-gray-900/50 p-3">
+      <div className="text-[12px] text-neutral-500 dark:text-neutral-400">{label}</div>
+      <div className="text-base font-semibold truncate text-gray-900 dark:text-white">{String(value)}</div>
     </div>
   );
 }
