@@ -49,6 +49,19 @@ function parseInfo(infoText: string) {
 
 export async function GET() {
   const redis = getRedis();
+  
+  // Check if Redis configuration is missing
+  const hasRedisUrl = !!process.env.REDIS_URL;
+  const hasRedisHost = !!process.env.REDIS_HOST;
+  
+  if (!hasRedisUrl && !hasRedisHost) {
+    return NextResponse.json({
+      ok: false,
+      error: 'Redis configuration is missing. Please configure your Redis connection in the settings.',
+      connection: getConnEnv(),
+    });
+  }
+  
   try {
     await redis.ping(); // quick connectivity check
 

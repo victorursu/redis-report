@@ -83,6 +83,18 @@ async function getLatency(redis: any) {
 }
 
 export async function GET() {
+  // Check if Redis configuration is missing
+  const hasRedisUrl = !!process.env.REDIS_URL;
+  const hasRedisHost = !!process.env.REDIS_HOST;
+  
+  if (!hasRedisUrl && !hasRedisHost) {
+    return NextResponse.json({
+      ok: false,
+      error: 'Redis configuration is missing. Please configure your Redis connection in the settings.',
+      fetchedAt: new Date().toISOString(),
+    });
+  }
+  
   const redis = getRedis();
   try {
     await redis.connect().catch(() => {});

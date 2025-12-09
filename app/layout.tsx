@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import StickyHeader from "@/components/StickyHeader";
 
 export const metadata: Metadata = {
-  title: "Redis Dashboard",
+  title: "RedisReport — Redis & Drupal Cache Analyzer",
   description: "Live metrics for a Redis host",
 };
 
