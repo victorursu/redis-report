@@ -124,26 +124,26 @@ export default function HomePage() {
 
   return (
     <main className="p-6 space-y-6">
-      <h1 className="text-2xl font-semibold">Redis Dashboard</h1>
+      <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Redis Dashboard</h1>
 
       {/* Config summary (your existing component) */}
       <RedisConfigSummary />
 
-      {isLoading && <p>Loading metrics…</p>}
+      {isLoading && <p className="text-gray-700 dark:text-gray-300">Loading metrics…</p>}
       {error && (
-        <p className="text-red-600">Failed to load: {String((error as any)?.message || error)}</p>
+        <p className="text-red-600 dark:text-red-400">Failed to load: {String((error as any)?.message || error)}</p>
       )}
-      {data && !data.ok && <p className="text-red-600">Redis error: {data.error}</p>}
+      {data && !data.ok && <p className="text-red-600 dark:text-red-400">Redis error: {data.error}</p>}
 
       {data?.ok && (
         <div className="space-y-8">
           {/* Live Alerts */}
           {alerts.length > 0 && (
-            <section className="bg-white rounded-2xl shadow p-4">
-              <h2 className="text-lg font-medium mb-2">Alerts</h2>
+            <section className="bg-white dark:bg-gray-800 rounded-2xl shadow p-4">
+              <h2 className="text-lg font-medium mb-2 text-gray-900 dark:text-white">Alerts</h2>
               <ul className="text-sm space-y-1">
                 {alerts.map((a, i) => (
-                  <li key={i} className={a.level === "red" ? "text-red-600" : "text-amber-600"}>
+                  <li key={i} className={a.level === "red" ? "text-red-600 dark:text-red-400" : "text-amber-600 dark:text-amber-400"}>
                     • {a.msg}
                   </li>
                 ))}
@@ -162,8 +162,8 @@ export default function HomePage() {
           </div>
 
           {/* Memory health */}
-          <section className="bg-white rounded-2xl shadow p-4">
-            <h2 className="text-lg font-medium mb-2">Memory</h2>
+          <section className="bg-white dark:bg-gray-800 rounded-2xl shadow p-4">
+            <h2 className="text-lg font-medium mb-2 text-gray-900 dark:text-white">Memory</h2>
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
               <Stat label="used_memory_human" value={String(data.memory.used_memory_human || "n/a")} />
               <Stat label="maxmemory" value={maxmemory > 0 ? humanBytes(maxmemory) : "unlimited"} />
@@ -189,24 +189,24 @@ export default function HomePage() {
           </section>
 
           {/* Keyspace table */}
-          <section className="bg-white rounded-2xl shadow p-4">
-            <h2 className="text-lg font-medium mb-3">Keyspace</h2>
+          <section className="bg-white dark:bg-gray-800 rounded-2xl shadow p-4">
+            <h2 className="text-lg font-medium mb-3 text-gray-900 dark:text-white">Keyspace</h2>
             <table className="w-full text-sm">
               <thead>
-              <tr className="text-left border-b">
-                <th className="py-2 pr-3">DB</th>
-                <th className="py-2 pr-3">Keys</th>
-                <th className="py-2 pr-3">Expires</th>
-                <th className="py-2 pr-3">Avg TTL</th>
+              <tr className="text-left border-b border-gray-200 dark:border-gray-700">
+                <th className="py-2 pr-3 text-gray-700 dark:text-gray-300">DB</th>
+                <th className="py-2 pr-3 text-gray-700 dark:text-gray-300">Keys</th>
+                <th className="py-2 pr-3 text-gray-700 dark:text-gray-300">Expires</th>
+                <th className="py-2 pr-3 text-gray-700 dark:text-gray-300">Avg TTL</th>
               </tr>
               </thead>
               <tbody>
               {Object.entries(data.keyspace).map(([db, rec]: any) => (
-                <tr key={db} className="border-b last:border-none">
-                  <td className="py-2 pr-3 font-medium">{db}</td>
-                  <td className="py-2 pr-3">{rec.keys ?? "-"}</td>
-                  <td className="py-2 pr-3">{rec.expires ?? "-"}</td>
-                  <td className="py-2 pr-3">{rec.avg_ttl ?? "-"}</td>
+                <tr key={db} className="border-b border-gray-200 dark:border-gray-700 last:border-none">
+                  <td className="py-2 pr-3 font-medium text-gray-900 dark:text-white">{db}</td>
+                  <td className="py-2 pr-3 text-gray-700 dark:text-gray-300">{rec.keys ?? "-"}</td>
+                  <td className="py-2 pr-3 text-gray-700 dark:text-gray-300">{rec.expires ?? "-"}</td>
+                  <td className="py-2 pr-3 text-gray-700 dark:text-gray-300">{rec.avg_ttl ?? "-"}</td>
                 </tr>
               ))}
               </tbody>
@@ -214,18 +214,18 @@ export default function HomePage() {
           </section>
 
           {/* Command mix (high ROI for prod issues) */}
-          <section className="bg-white rounded-2xl shadow p-4">
-            <h2 className="text-lg font-medium mb-3">Command Mix (INFO commandstats)</h2>
+          <section className="bg-white dark:bg-gray-800 rounded-2xl shadow p-4">
+            <h2 className="text-lg font-medium mb-3 text-gray-900 dark:text-white">Command Mix (INFO commandstats)</h2>
             {!data.commandstats ? (
-              <p className="text-sm text-neutral-600">commandstats not provided by /api/metrics.</p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400">commandstats not provided by /api/metrics.</p>
             ) : (
               <table className="w-full text-sm">
                 <thead>
-                <tr className="text-left border-b">
-                  <th className="py-2 pr-3">Command</th>
-                  <th className="py-2 pr-3">Calls</th>
-                  <th className="py-2 pr-3">usec/call</th>
-                  <th className="py-2 pr-3">Total usec</th>
+                <tr className="text-left border-b border-gray-200 dark:border-gray-700">
+                  <th className="py-2 pr-3 text-gray-700 dark:text-gray-300">Command</th>
+                  <th className="py-2 pr-3 text-gray-700 dark:text-gray-300">Calls</th>
+                  <th className="py-2 pr-3 text-gray-700 dark:text-gray-300">usec/call</th>
+                  <th className="py-2 pr-3 text-gray-700 dark:text-gray-300">Total usec</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -233,11 +233,11 @@ export default function HomePage() {
                 .sort((a: any, b: any) => (b[1]?.calls || 0) - (a[1]?.calls || 0))
                 .slice(0, 20)
                 .map(([cmd, s]) => (
-                  <tr key={cmd} className="border-b last:border-none">
-                    <td className="py-2 pr-3">{cmd}</td>
-                    <td className="py-2 pr-3">{s?.calls ?? "-"}</td>
-                    <td className="py-2 pr-3">{s?.usec_per_call?.toFixed ? s.usec_per_call.toFixed(2) : s?.usec_per_call ?? "-"}</td>
-                    <td className="py-2 pr-3">{s?.usec ?? "-"}</td>
+                  <tr key={cmd} className="border-b border-gray-200 dark:border-gray-700 last:border-none">
+                    <td className="py-2 pr-3 text-gray-900 dark:text-white">{cmd}</td>
+                    <td className="py-2 pr-3 text-gray-700 dark:text-gray-300">{s?.calls ?? "-"}</td>
+                    <td className="py-2 pr-3 text-gray-700 dark:text-gray-300">{s?.usec_per_call?.toFixed ? s.usec_per_call.toFixed(2) : s?.usec_per_call ?? "-"}</td>
+                    <td className="py-2 pr-3 text-gray-700 dark:text-gray-300">{s?.usec ?? "-"}</td>
                   </tr>
                 ))}
                 </tbody>
@@ -246,15 +246,15 @@ export default function HomePage() {
           </section>
 
           {/* Persistence & replication health */}
-          <section className="bg-white rounded-2xl shadow p-4">
-            <h2 className="text-lg font-medium mb-3">Persistence & Replication</h2>
+          <section className="bg-white dark:bg-gray-800 rounded-2xl shadow p-4">
+            <h2 className="text-lg font-medium mb-3 text-gray-900 dark:text-white">Persistence & Replication</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <h3 className="font-semibold mb-2">Persistence</h3>
                 {!data.persistence ? (
-                  <p className="text-sm text-neutral-600">persistence not provided by /api/metrics.</p>
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400">persistence not provided by /api/metrics.</p>
                 ) : (
-                  <ul className="text-sm space-y-1">
+                  <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
                     <li>RDB last save: {String(data.persistence.rdb_last_save_time ?? "n/a")}</li>
                     <li>RDB changes since last save: {String(data.persistence.rdb_changes_since_last_save ?? "n/a")}</li>
                     <li>RDB last bgsave status: {String(data.persistence.rdb_last_bgsave_status ?? "n/a")}</li>
@@ -265,11 +265,11 @@ export default function HomePage() {
                 )}
               </div>
               <div>
-                <h3 className="font-semibold mb-2">Replication</h3>
+                <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">Replication</h3>
                 {!data.replication ? (
-                  <p className="text-sm text-neutral-600">replication not provided by /api/metrics.</p>
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400">replication not provided by /api/metrics.</p>
                 ) : (
-                  <ul className="text-sm space-y-1">
+                  <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
                     <li>role: {String(data.replication.role)}</li>
                     {data.replication.role !== "master" && data.replication.role !== "primary" && (
                       <>
@@ -288,35 +288,35 @@ export default function HomePage() {
           </section>
 
           {/* Top Keys (by MEMORY USAGE) */}
-          <section className="bg-white rounded-2xl shadow p-4">
-            <h2 className="text-lg font-medium mb-3">Top Keys (by MEMORY USAGE)</h2>
+          <section className="bg-white dark:bg-gray-800 rounded-2xl shadow p-4">
+            <h2 className="text-lg font-medium mb-3 text-gray-900 dark:text-white">Top Keys (by MEMORY USAGE)</h2>
             {data.topKeys.length === 0 ? (
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-neutral-600 dark:text-neutral-400">
                 No data or MEMORY command not permitted by your provider.
               </p>
             ) : (
               <table className="w-full text-sm">
                 <thead>
-                <tr className="text-left border-b">
-                  <th className="py-2 pr-3">Key</th>
-                  <th className="py-2 pr-3">Size (bytes)</th>
-                  <th className="py-2 pr-3">TTL</th>
+                <tr className="text-left border-b border-gray-200 dark:border-gray-700">
+                  <th className="py-2 pr-3 text-gray-700 dark:text-gray-300">Key</th>
+                  <th className="py-2 pr-3 text-gray-700 dark:text-gray-300">Size (bytes)</th>
+                  <th className="py-2 pr-3 text-gray-700 dark:text-gray-300">TTL</th>
                 </tr>
                 </thead>
                 <tbody>
                 {data.topKeys.map((k) => (
-                  <tr key={k.key} className="border-b last:border-none hover:bg-gray-50">
+                  <tr key={k.key} className="border-b border-gray-200 dark:border-gray-700 last:border-none hover:bg-gray-50 dark:hover:bg-gray-700">
                     <td className="py-2 pr-3 truncate max-w-[520px]">
                       <a 
                         href={`/inspect-key?key=${encodeURIComponent(k.key)}`}
-                        className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
+                        className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline cursor-pointer"
                         title={`Inspect key: ${k.key}`}
                       >
                         {k.key}
                       </a>
                     </td>
-                    <td className="py-2 pr-3">{k.size ?? "n/a"}</td>
-                    <td className="py-2 pr-3">{k.ttl}</td>
+                    <td className="py-2 pr-3 text-gray-700 dark:text-gray-300">{k.size ?? "n/a"}</td>
+                    <td className="py-2 pr-3 text-gray-700 dark:text-gray-300">{k.ttl}</td>
                   </tr>
                 ))}
                 </tbody>
@@ -325,32 +325,32 @@ export default function HomePage() {
           </section>
 
           {/* Slowlog & Latency */}
-          <section className="bg-white rounded-2xl shadow p-4">
-            <h2 className="text-lg font-medium mb-3">Slowlog & Latency</h2>
+          <section className="bg-white dark:bg-gray-800 rounded-2xl shadow p-4">
+            <h2 className="text-lg font-medium mb-3 text-gray-900 dark:text-white">Slowlog & Latency</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div>
                 <h3 className="font-semibold mb-2">Slowlog (last 25)</h3>
                 {data.slowlog.entries.length === 0 ? (
-                  <p className="text-sm text-neutral-600">No entries or command not permitted.</p>
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400">No entries or command not permitted.</p>
                 ) : (
                   <table className="w-full text-xs">
                     <thead>
-                    <tr className="text-left border-b">
-                      <th className="py-2 pr-2">ID</th>
-                      <th className="py-2 pr-2">Unix TS</th>
-                      <th className="py-2 pr-2">Duration (µs)</th>
-                      <th className="py-2 pr-2">Cmd</th>
+                    <tr className="text-left border-b border-gray-200 dark:border-gray-700">
+                      <th className="py-2 pr-2 text-gray-700 dark:text-gray-300">ID</th>
+                      <th className="py-2 pr-2 text-gray-700 dark:text-gray-300">Unix TS</th>
+                      <th className="py-2 pr-2 text-gray-700 dark:text-gray-300">Duration (µs)</th>
+                      <th className="py-2 pr-2 text-gray-700 dark:text-gray-300">Cmd</th>
                     </tr>
                     </thead>
                     <tbody>
                     {data.slowlog.entries.map((e: any, i: number) => {
                       const [id, ts, usec, args] = e;
                       return (
-                        <tr key={i} className="border-b last:border-none">
-                          <td className="py-2 pr-2">{id}</td>
-                          <td className="py-2 pr-2">{ts}</td>
-                          <td className="py-2 pr-2">{usec}</td>
-                          <td className="py-2 pr-2 truncate max-w-[340px]">
+                        <tr key={i} className="border-b border-gray-200 dark:border-gray-700 last:border-none">
+                          <td className="py-2 pr-2 text-gray-700 dark:text-gray-300">{id}</td>
+                          <td className="py-2 pr-2 text-gray-700 dark:text-gray-300">{ts}</td>
+                          <td className="py-2 pr-2 text-gray-700 dark:text-gray-300">{usec}</td>
+                          <td className="py-2 pr-2 truncate max-w-[340px] text-gray-700 dark:text-gray-300">
                             {Array.isArray(args) ? args.join(" ") : ""}
                           </td>
                         </tr>
@@ -364,26 +364,26 @@ export default function HomePage() {
                 <h3 className="font-semibold mb-2">Latency Latest</h3>
                 {!data.latency.latest ||
                 (Array.isArray(data.latency.latest) && data.latency.latest.length === 0) ? (
-                  <p className="text-sm text-neutral-600">No latency events or command not permitted.</p>
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400">No latency events or command not permitted.</p>
                 ) : (
                   <table className="w-full text-xs">
                     <thead>
-                    <tr className="text-left border-b">
-                      <th className="py-2 pr-2">Event</th>
-                      <th className="py-2 pr-2">Last TS</th>
-                      <th className="py-2 pr-2">Latest (ms)</th>
-                      <th className="py-2 pr-2">Max (ms)</th>
+                    <tr className="text-left border-b border-gray-200 dark:border-gray-700">
+                      <th className="py-2 pr-2 text-gray-700 dark:text-gray-300">Event</th>
+                      <th className="py-2 pr-2 text-gray-700 dark:text-gray-300">Last TS</th>
+                      <th className="py-2 pr-2 text-gray-700 dark:text-gray-300">Latest (ms)</th>
+                      <th className="py-2 pr-2 text-gray-700 dark:text-gray-300">Max (ms)</th>
                     </tr>
                     </thead>
                     <tbody>
                     {(data.latency.latest as any[]).map((row: any[], i: number) => {
                       const [event, ts, latest, max] = row;
                       return (
-                        <tr key={i} className="border-b last:border-none">
-                          <td className="py-2 pr-2">{event}</td>
-                          <td className="py-2 pr-2">{ts}</td>
-                          <td className="py-2 pr-2">{latest}</td>
-                          <td className="py-2 pr-2">{max}</td>
+                        <tr key={i} className="border-b border-gray-200 dark:border-gray-700 last:border-none">
+                          <td className="py-2 pr-2 text-gray-700 dark:text-gray-300">{event}</td>
+                          <td className="py-2 pr-2 text-gray-700 dark:text-gray-300">{ts}</td>
+                          <td className="py-2 pr-2 text-gray-700 dark:text-gray-300">{latest}</td>
+                          <td className="py-2 pr-2 text-gray-700 dark:text-gray-300">{max}</td>
                         </tr>
                       );
                     })}
@@ -408,24 +408,28 @@ function Card({ title, value, format }: { title: string; value: any; format?: "0
     display = (Math.round(value * 10) / 10).toFixed(1);
   }
   return (
-    <div className="bg-white rounded-2xl shadow p-4">
-      <div className="text-sm text-neutral-500">{title}</div>
-      <div className="text-xl font-semibold">{String(display ?? "—")}</div>
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow dark:shadow-gray-900/50 p-4">
+      <div className="text-sm text-neutral-500 dark:text-neutral-400">{title}</div>
+      <div className="text-xl font-semibold text-gray-900 dark:text-white">{String(display ?? "—")}</div>
     </div>
   );
 }
 
 function Stat({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="rounded-xl border p-3">
-      <div className="text-xs text-neutral-500">{label}</div>
-      <div className="text-sm font-medium">{value}</div>
+    <div className="rounded-xl border border-gray-200 dark:border-gray-700 p-3">
+      <div className="text-xs text-neutral-500 dark:text-neutral-400">{label}</div>
+      <div className="text-sm font-medium text-gray-900 dark:text-white">{value}</div>
     </div>
   );
 }
 
 function Badge({ label, value, intent = "ok" as const }: { label: string; value: string | number; intent?: "ok" | "warn" | "neutral" }) {
-  const cls = intent === "warn" ? "bg-red-50 text-red-700" : intent === "neutral" ? "bg-neutral-50 text-neutral-700" : "bg-green-50 text-green-700";
+  const cls = intent === "warn" 
+    ? "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400" 
+    : intent === "neutral" 
+    ? "bg-neutral-50 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300" 
+    : "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400";
   return (
     <span className={`inline-flex items-center gap-2 ${cls} rounded-full px-3 py-1 w-fit`}>
       <span className="text-xs uppercase tracking-wide">{label}</span>

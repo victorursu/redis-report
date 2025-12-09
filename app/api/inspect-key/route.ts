@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Redis from 'ioredis';
-
-const redis = new Redis(process.env.REDIS_URL!);
+import { getRedis } from '@/lib/redis';
 
 export async function GET(req: NextRequest) {
+  const redis = getRedis();
   const { searchParams } = new URL(req.url);
   const key = searchParams.get('key');
 
@@ -12,6 +11,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    await redis.connect().catch(() => {});
     const type = await redis.type(key);
     let value: unknown = null;
 
