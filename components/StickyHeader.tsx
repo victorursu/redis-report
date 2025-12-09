@@ -303,6 +303,25 @@ function ConfigModal({ onClose }: { onClose: () => void }) {
                   )}
                 </div>
               </div>
+
+              {/* Top Keys Configuration */}
+              <div>
+                <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-white">Top Keys Configuration</h3>
+                <div className="space-y-3">
+                  <ConfigField
+                    label="TOP_KEYS_SAMPLE_COUNT"
+                    value={config.TOP_KEYS_SAMPLE_COUNT || ''}
+                    onChange={(v) => updateConfig('TOP_KEYS_SAMPLE_COUNT', v)}
+                    placeholder="2000"
+                  />
+                  <ConfigField
+                    label="TOP_KEYS_LIMIT"
+                    value={config.TOP_KEYS_LIMIT || ''}
+                    onChange={(v) => updateConfig('TOP_KEYS_LIMIT', v)}
+                    placeholder="25"
+                  />
+                </div>
+              </div>
             </div>
           )}
         </div>
